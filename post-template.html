@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文章标题 · 我的博客</title>
+
+  <!-- 摘要会出现在首页卡片和 RSS 里，请认真写 -->
+  <meta name="description" content="一句话说清这篇文章讲了什么。">
+
+  <!-- 下面两行是构建脚本生成列表 / RSS / 搜索索引的依据，务必填写 -->
+  <meta name="post:date" content="2026-01-01">
+  <meta name="post:tags" content="标签一,标签二">
+
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="我的博客" href="../feed.xml">
+
+  <!-- 防主题闪烁：必须在 CSS 之前、同步执行 -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!--@nav-->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">我的博客</span>
+      </a>
+      <nav class="site-nav" id="siteNav" aria-label="主导航">
+        <a href="../index.html">首页</a>
+        <a href="../about.html">关于</a>
+        <a href="../feed.xml">RSS</a>
+      </nav>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="切换到深色主题" title="深色模式">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+        </button>
+        <button id="navToggle" class="icon-btn nav-toggle" type="button" aria-label="展开菜单" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+  </header>
+  <!--@/nav-->
+
+  <main id="main" class="wrap">
+    <div class="post-layout">
+      <div class="post">
+        <header class="post-header">
+          <h1>文章标题</h1>
+          <div class="post-meta">
+            <time datetime="2026-01-01">2026-01-01</time>
+            <span class="dot">·</span>
+            <span class="tag">标签一</span>
+            <span class="tag">标签二</span>
+          </div>
+        </header>
+
+        <!-- 正文：目录会自动从这个 article 里的 h2 / h3 生成 -->
+        <article class="prose">
+          <p>正文第一段。把 <code>&lt;div class="prose"&gt;</code> 里换成 <code>&lt;article class="prose"&gt;</code> 里的内容即可。</p>
+
+          <h2>二级标题</h2>
+          <p>正文。支持 <strong>加粗</strong>、<em>斜体</em>、<a href="#">链接</a>、<code>行内代码</code>、<mark>高亮</mark>。</p>
+
+          <h3>三级标题</h3>
+          <ul>
+            <li>无序列表项</li>
+            <li>无序列表项</li>
+          </ul>
+
+          <blockquote>
+            <p>引用块。适合放摘录、别人说的话、或者需要强调的结论。</p>
+          </blockquote>
+
+          <pre><code>// 代码块：鼠标悬停会出现「复制」按钮
+function hello(name) {
+  return `Hello, ${name}!`;
+}</code></pre>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>列一</th><th>列二</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>内容</td><td>内容</td></tr>
+                <tr><td>内容</td><td>内容</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            <p>提示框。把 <code>callout</code> 换成 <code>callout warn</code> 或 <code>callout danger</code> 可换配色。</p>
+          </div>
+
+          <figure>
+            <img src="../assets/sample-image.svg" alt="示例图片" width="720" height="360">
+            <figcaption>图注写在这里。</figcaption>
+          </figure>
+        </article>
+
+        <!-- 上下篇：手改 href 与标题即可 -->
+        <nav class="post-nav">
+          <a class="prev" href="../index.html"><span>← 返回</span>全部文章</a>
+          <a class="next" href="../index.html"><span>下一篇 →</span>标题</a>
+        </nav>
+      </div>
+
+      <aside class="post-aside">
+        <p class="toc-title">本页目录</p>
+        <nav class="toc" id="toc" aria-label="本页目录"></nav>
+      </aside>
+    </div>
+  </main>
+
+  <!--@footer-->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span>© <span id="year">2026</span> 我的博客 · 纯 HTML / CSS / JS 手写，无生成器、无依赖</span>
+      <nav aria-label="页脚导航">
+        <a href="../index.html">首页</a>
+        <a href="../about.html">关于</a>
+        <a href="../feed.xml">RSS</a>
+      </nav>
+    </div>
+  </footer>
+  <!--@/footer-->
+
+  <script src="../assets/main.js"></script>
+</body>
+</html>

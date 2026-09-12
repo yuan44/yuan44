@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>欢迎使用纯静态博客骨架 · 我的博客</title>
+  <meta name="description" content="这个骨架包含什么、怎么发一篇文章、怎么部署到 GitHub Pages，以及它刻意不做什么。">
+  <meta name="post:date" content="2026-09-12">
+  <meta name="post:tags" content="建站,说明">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="我的博客" href="../feed.xml">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!--@nav-->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">我的博客</span>
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="../index.html">首页</a>
+      <a href="../about.html">关于</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="切换到深色主题" title="深色模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+      </button>
+      <button id="navToggle" class="icon-btn nav-toggle" type="button" aria-label="展开菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+</header>
+<!--@/nav-->
+
+  <main id="main" class="wrap">
+    <div class="post-layout">
+      <div class="post">
+        <header class="post-header">
+          <h1>欢迎使用纯静态博客骨架</h1>
+          <div class="post-meta">
+            <time datetime="2026-09-12">2026-09-12</time>
+            <span class="dot">·</span>
+            <span class="tag">建站</span>
+            <span class="tag">说明</span>
+          </div>
+        </header>
+
+        <article class="prose">
+          <p>
+            这是一个可以直接 push 上线的静态博客骨架。它的全部内容是
+            <strong>HTML、一份 CSS、一份原生 JS</strong>——
+            没有生成器、没有 npm 依赖、没有构建步骤，也没有需要定期升级的工具链。
+          </p>
+          <p>
+            它的目标是：<mark>把「写博客」这件事，从「维护一套工具链」里解放出来。</mark>
+          </p>
+
+          <h2>这个骨架里有什么</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>路径</th><th>作用</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>index.html</code></td><td>首页：站点介绍 + 搜索框 + 文章列表</td></tr>
+                <tr><td><code>about.html</code></td><td>关于页</td></tr>
+                <tr><td><code>posts/*.html</code></td><td>文章，一篇一个文件</td></tr>
+                <tr><td><code>assets/style.css</code></td><td>全部样式，含暗色主题与打印样式</td></tr>
+                <tr><td><code>assets/main.js</code></td><td>暗色模式、目录、代码复制、搜索（渐进增强）</td></tr>
+                <tr><td><code>feed.xml</code></td><td>RSS 订阅源</td></tr>
+                <tr><td><code>search-index.json</code></td><td>站内搜索索引</td></tr>
+                <tr><td><code>.nojekyll</code></td><td>一行空文件，阻止 GitHub Pages 跑 Jekyll，见下文</td></tr>
+                <tr><td><code>tools/</code></td><td>可选工具：构建脚本、页面模板。不参与发布也可</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>发一篇文章只要三步</h2>
+          <ol>
+            <li>把 <code>tools/post-template.html</code> 复制到 <code>posts/</code>，改个文件名；</li>
+            <li>改其中的标题、<code>&lt;meta name="post:date"&gt;</code>、<code>&lt;meta name="post:tags"&gt;</code> 和正文；</li>
+            <li>push。首页列表和 RSS 要么手改，要么跑一句 <code>node tools/build.mjs</code> 自动生成。</li>
+          </ol>
+
+          <pre><code>cp tools/post-template.html posts/my-new-post.html
+# 编辑 posts/my-new-post.html
+node tools/build.mjs       # 可选：刷新首页列表 / RSS / 搜索索引
+git add -A &amp;&amp; git commit -m "post: my new post" &amp;&amp; git push</code></pre>
+
+          <div class="callout">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            <p>
+              <code>tools/build.mjs</code> 是<strong>可选</strong>的。不运行它，站点也完整可用——
+              所有 HTML 里已经是展开好的最终内容。它存在的唯一理由，是消除「改一次导航要改 N 个文件」的重复劳动。
+            </p>
+          </div>
+
+          <h2>部署到 GitHub Pages</h2>
+          <p>新建仓库，把文件推上去，然后：</p>
+          <ol>
+            <li>进入仓库 <strong>Settings → Pages</strong>；</li>
+            <li><strong>Source</strong> 选 <strong>Deploy from a branch</strong>；</li>
+            <li>分支选 <code>main</code>，目录选 <code>/ (root)</code>，保存；</li>
+            <li>等约一分钟，访问 <code>https://&lt;用户名&gt;.github.io/&lt;仓库名&gt;/</code>。</li>
+          </ol>
+
+          <div class="callout warn">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3z"/><path d="M12 9.5v4M12 16.5h.01"/></svg>
+            <p>
+              <strong>必须保留 <code>.nojekyll</code> 这个空文件。</strong>
+              从分支部署时，GitHub Pages 默认会让 Jekyll 先处理一遍你的文件，
+              而 Jekyll 会<strong>忽略所有以 <code>_</code> 下划线开头的文件和目录</strong>。
+              放一个空的 <code>.nojekyll</code> 就彻底关掉它。这是纯静态方案唯一的隐藏陷阱。
+            </p>
+          </div>
+
+          <p>
+            如果你用自定义域名，把 <code>CNAME</code> 文件（内容为你的域名）放到仓库根目录即可。
+            另外记得把 <code>tools/build.mjs</code> 顶部的 <code>SITE_URL</code> 改成真实地址，RSS 里的链接才正确。
+          </p>
+
+          <h2>它刻意不做什么</h2>
+          <p>这套方案的代价只有一个，必须说清楚：</p>
+          <div class="callout danger">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+            <p>
+              <strong>共享布局的维护成本从 O(1) 变成 O(n)。</strong>
+              改一次导航栏或页脚，用生成器的方案只改一个模板文件，这里要改每一个 <code>.html</code>。
+              文章少时无所谓；到三十篇以后，你会想跑 <code>tools/build.mjs</code>，或者干脆上 Jekyll。
+            </p>
+          </div>
+
+          <p>除此外也都是有意的取舍：</p>
+          <ul>
+            <li><strong>没有评论系统</strong>——需要的话接入 Twikoo / Waline 之类的第三方服务，加一段 script 即可；</li>
+            <li><strong>没有标签页和归档页</strong>——文章少时没必要，多了可以自己生成；</li>
+            <li><strong>没有自动分页</strong>——一页列完，简单直接；</li>
+            <li><strong>没有访问统计</strong>——可以用不蒜子之类的第三方脚本，一行标签的事。</li>
+          </ul>
+
+          <h2>下一步</h2>
+          <ul>
+            <li>读 <a href="native-js-features.html">用原生 JS 实现暗色模式、目录与代码复制</a>，了解交互层是怎么写的；</li>
+            <li>读仓库根目录的 <code>README.md</code>，里面有完整的目录说明和常见问题。</li>
+          </ul>
+        </article>
+
+        <nav class="post-nav">
+          <a class="next" href="native-js-features.html"><span>下一篇 →</span>用原生 JS 实现暗色模式、目录与代码复制</a>
+        </nav>
+      </div>
+
+      <aside class="post-aside">
+        <p class="toc-title">本页目录</p>
+        <nav class="toc" id="toc" aria-label="本页目录"></nav>
+      </aside>
+    </div>
+  </main>
+
+  <!--@footer-->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© <span id="year">2026</span> 我的博客 · 纯 HTML / CSS / JS 手写，无生成器、无依赖</span>
+    <nav aria-label="页脚导航">
+      <a href="../index.html">首页</a>
+      <a href="../about.html">关于</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
+<!--@/footer-->
+
+  <script src="../assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关于 · 我的博客</title>
+  <meta name="description" content="关于这个博客和它的作者。">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="我的博客" href="feed.xml">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!--@nav-->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">我的博客</span>
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="切换到深色主题" title="深色模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+      </button>
+      <button id="navToggle" class="icon-btn nav-toggle" type="button" aria-label="展开菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+</header>
+<!--@/nav-->
+
+  <main id="main" class="wrap">
+    <div class="post-layout">
+      <div class="post">
+        <header class="post-header">
+          <h1>关于</h1>
+        </header>
+
+        <article class="prose">
+          <p>这里写你是谁、在做什么、为什么开这个博客。</p>
+
+          <h2>关于这个站</h2>
+          <p>
+            它是一个<b>纯静态网站</b>：所有页面都是手写的 HTML 文件，样式在一份 CSS 里，
+            交互用一份原生 JavaScript。没有生成器、没有 npm 依赖、没有构建步骤，
+            也没有需要定期升级的工具链。
+          </p>
+
+          <h2>关于我</h2>
+          <p>把你的自我介绍写在这里。也可以加上联系方式：</p>
+          <ul>
+            <li>GitHub：<a href="https://github.com/">@your-name</a></li>
+            <li>邮箱：<a href="mailto:you@example.com">you@example.com</a></li>
+          </ul>
+
+          <h2>联系</h2>
+          <p>欢迎通过上面的方式找我。也可以订阅 <a href="feed.xml">RSS</a>。</p>
+        </article>
+
+        <nav class="post-nav">
+          <a class="prev" href="index.html"><span>← 返回</span>全部文章</a>
+        </nav>
+      </div>
+
+      <aside class="post-aside">
+        <p class="toc-title">本页目录</p>
+        <nav class="toc" id="toc" aria-label="本页目录"></nav>
+      </aside>
+    </div>
+  </main>
+
+  <!--@footer-->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© <span id="year">2026</span> 我的博客 · 纯 HTML / CSS / JS 手写，无生成器、无依赖</span>
+    <nav aria-label="页脚导航">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
+<!--@/footer-->
+
+  <script src="assets/main.js"></script>
+</body>
+</html>
