@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>我的博客</title>
+    <link>https://example.github.io/</link>
+    <description>用纯 HTML / CSS / JS 手写的静态博客</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 12 Sep 2026 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>欢迎使用纯静态博客骨架</title>
+      <link>https://example.github.io/posts/hello-world.html</link>
+      <guid isPermaLink="true">https://example.github.io/posts/hello-world.html</guid>
+      <pubDate>Sat, 12 Sep 2026 00:00:00 +0800</pubDate>
+      <category>建站</category>
+      <category>说明</category>
+      <description>这个骨架包含什么、怎么发一篇文章、怎么部署到 GitHub Pages，以及它刻意不做什么。</description>
+    </item>
+    <item>
+      <title>用原生 JS 实现暗色模式、目录与代码复制</title>
+      <link>https://example.github.io/posts/native-js-features.html</link>
+      <guid isPermaLink="true">https://example.github.io/posts/native-js-features.html</guid>
+      <pubDate>Thu, 10 Sep 2026 00:00:00 +0800</pubDate>
+      <category>JavaScript</category>
+      <category>前端</category>
+      <description>拆解 assets/main.js：暗色模式、自动目录、滚动高亮、代码复制、站内搜索，全部渐进增强，禁用 JS 后站点依然可读。</description>
+    </item>
+  </channel>
+</rss>

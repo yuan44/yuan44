@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>白告的测试</title>
+  <meta name="description" content="用纯 HTML / CSS / JS 手写的静态博客：没有生成器，没有依赖，没有构建步骤。">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="白告的博客" href="feed.xml">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!--@nav-->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">白告的博客</span>
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="切换到深色主题" title="深色模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+      </button>
+      <button id="navToggle" class="icon-btn nav-toggle" type="button" aria-label="展开菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+</header>
+<!--@/nav-->
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <h1>白告的博客</h1>
+        <p>
+          纯 HTML / CSS / JS 手写。没有生成器，没有依赖，没有构建步骤——
+          改完文件直接 push，GitHub Pages 立刻就是新的。
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="feed.xml">订阅 RSS</a>
+          <a class="btn" href="about.html">关于这个站</a>
+        </div>
+
+        <div class="search">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="searchInput" type="search" placeholder="搜索文章…（按 / 聚焦，Esc 清空）" aria-label="搜索文章" autocomplete="off">
+        </div>
+        <p class="search-hint" id="searchHint" role="status"></p>
+      </div>
+    </section>
+
+    <section class="posts" id="posts">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>全部文章</h2>
+          <span>共 2 篇</span>
+        </div>
+
+        <!-- 这个区间由 tools/build.mjs 自动重写。手改也行，但下次构建会被覆盖。 -->
+        <div class="post-list" id="postList">
+          <!--@postlist-->
+        <article class="post-card">
+          <h3><a href="posts/hello-world.html">欢迎使用纯静态博客骨架</a></h3>
+          <p class="excerpt">这个骨架包含什么、怎么发一篇文章、怎么部署到 GitHub Pages，以及它刻意不做什么。</p>
+          <div class="post-meta">
+            <time datetime="2026-09-12">2026-09-12</time>
+            <span class="dot">·</span>
+            <span class="tag">建站</span>
+            <span class="tag">说明</span>
+          </div>
+        </article>
+        <article class="post-card">
+          <h3><a href="posts/native-js-features.html">用原生 JS 实现暗色模式、目录与代码复制</a></h3>
+          <p class="excerpt">拆解 assets/main.js：暗色模式、自动目录、滚动高亮、代码复制、站内搜索，全部渐进增强，禁用 JS 后站点依然可读。</p>
+          <div class="post-meta">
+            <time datetime="2026-09-10">2026-09-10</time>
+            <span class="dot">·</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">前端</span>
+          </div>
+        </article>
+<!--@/postlist-->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!--@footer-->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© <span id="year">2026</span> 我的博客 · 纯 HTML / CSS / JS 手写，无生成器、无依赖</span>
+    <nav aria-label="页脚导航">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
+<!--@/footer-->
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

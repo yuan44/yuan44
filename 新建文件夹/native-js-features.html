@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>用原生 JS 实现暗色模式、目录与代码复制 · 我的博客</title>
+  <meta name="description" content="拆解 assets/main.js：暗色模式、自动目录、滚动高亮、代码复制、站内搜索，全部渐进增强，禁用 JS 后站点依然可读。">
+  <meta name="post:date" content="2026-09-10">
+  <meta name="post:tags" content="JavaScript,前端">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="alternate" type="application/rss+xml" title="我的博客" href="../feed.xml">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!--@nav-->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">我的博客</span>
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <a href="../index.html">首页</a>
+      <a href="../about.html">关于</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="切换到深色主题" title="深色模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+      </button>
+      <button id="navToggle" class="icon-btn nav-toggle" type="button" aria-label="展开菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress" id="progress" aria-hidden="true"><span></span></div>
+</header>
+<!--@/nav-->
+
+  <main id="main" class="wrap">
+    <div class="post-layout">
+      <div class="post">
+        <header class="post-header">
+          <h1>用原生 JS 实现暗色模式、目录与代码复制</h1>
+          <div class="post-meta">
+            <time datetime="2026-09-10">2026-09-10</time>
+            <span class="dot">·</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">前端</span>
+          </div>
+        </header>
+
+        <article class="prose">
+          <p>
+            这个站没有引入任何框架。这篇文章拆开 <code>assets/main.js</code>，
+            看看那些通常由博客主题提供的功能，用原生 API 实现起来到底要多少代码。
+          </p>
+
+          <h2>设计原则：全部渐进增强</h2>
+          <p>
+            每一段脚本都遵守同一条规则：<strong>先判断目标元素在不在，不在就安静返回。</strong>
+            因此：
+          </p>
+          <ul>
+            <li>首页不会去执行「生成目录」；</li>
+            <li>文章页不会去执行「站内搜索」；</li>
+            <li>禁用 JavaScript 后，正文、样式、链接全部照常工作，只是少了几个按钮。</li>
+          </ul>
+          <pre><code>var btn = document.querySelector('#themeToggle');
+if (!btn) return;      // ← 这个模式重复出现在每个 init 函数开头</code></pre>
+
+          <h2>暗色模式：关键在「不闪烁」</h2>
+          <p>
+            最容易踩的坑是：等 <code>DOMContentLoaded</code> 再读 localStorage 设置主题，
+            用户会先看到一帧白屏再跳到深色。解法是<strong>把这段脚本同步塞在 <code>&lt;head&gt;</code> 里，
+            并且放在样式表之前</strong>：
+          </p>
+          <pre><code>&lt;script&gt;
+  (function () {
+    try {
+      var saved = localStorage.getItem('theme');
+      var dark = saved ? saved === 'dark'
+                       : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    } catch (e) {}
+  })();
+&lt;/script&gt;</code></pre>
+          <p>
+            它只做一件事：在浏览器开始绘制之前，把 <code>data-theme</code> 写到
+            <code>&lt;html&gt;</code> 上。样式侧只需要两组 CSS 变量：
+          </p>
+          <pre><code>:root                { --bg: #f5f6f8; --text: #191c20; }
+[data-theme="dark"]  { --bg: #0e1114; --text: #e8ebef; }</code></pre>
+          <p>
+            真正切换主题的函数在 <code>main.js</code> 里，只有几行——写属性、存 localStorage、换图标：
+          </p>
+          <pre><code>btn.addEventListener('click', function () {
+  var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('theme', next);
+});</code></pre>
+          <div class="callout">
+            <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+            <p>
+              顺手加一行 <code>color-scheme: light</code> / <code>dark</code>，
+              浏览器的滚动条、表单控件、默认背景就会跟着一起变色，不用自己写。
+            </p>
+          </div>
+
+          <h2>目录：从正文里长出来</h2>
+          <p>
+            不用手写目录，也不用额外配置——直接扫正文里的 <code>h2</code> 和 <code>h3</code>。
+            中文标题没有合法的 id，所以要自己生成一个，并且处理重名：
+          </p>
+          <pre><code>var heads = document.querySelectorAll('.prose h2, .prose h3');
+var used = {};
+
+heads.forEach(function (h, i) {
+  if (h.id) return;
+  var base = h.textContent.trim().toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5]+/g, '-')     // 中文要显式保留
+    .replace(/^-+|-+$/g, '') || ('section-' + i);
+
+  var id = base, n = 2;
+  while (used[id] || document.getElementById(id)) id = base + '-' + (n++);
+  h.id = id;
+  used[id] = 1;
+});</code></pre>
+          <p>
+            列表少于两项时直接把目录整个删掉，避免出现只有一个条目的尴尬侧栏：
+          </p>
+          <pre><code>if (heads.length &lt; 2) { toc.remove(); return; }</code></pre>
+
+          <h3>滚动高亮</h3>
+          <p>
+            <code>IntersectionObserver</code> 也能做，但在「最后一项永远点不亮」这类边界上比较烦。
+            这里用一个更朴素也更可靠的办法：<strong>找出最后一个顶边已经越过分隔线的标题</strong>。
+          </p>
+          <pre><code>function highlight() {
+  var current = links[0];
+
+  for (var i = 0; i &lt; heads.length; i++) {
+    if (heads[i].getBoundingClientRect().top &lt;= 100) current = links[i];
+    else break;                 // 标题按文档顺序排列，可以提前退出
+  }
+
+  // 滚到底部时强制点亮最后一项
+  if (window.innerHeight + window.scrollY &gt;= document.body.offsetHeight - 4) {
+    current = links[links.length - 1];
+  }
+
+  links.forEach(function (a) { a.classList.toggle('active', a === current); });
+}</code></pre>
+          <p>
+            配合 <code>requestAnimationFrame</code> 节流，滚动时不会每个事件都触发一次重排：
+          </p>
+          <pre><code>var ticking = false;
+window.addEventListener('scroll', function () {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(function () { highlight(); ticking = false; });
+}, { passive: true });</code></pre>
+
+          <h2>代码复制：运行时注入按钮</h2>
+          <p>
+            与其在每个 <code>&lt;pre&gt;</code> 里手写一个按钮，不如让脚本自己加。
+            这样正文保持干净，复制粘贴别人的代码片段也不用改结构：
+          </p>
+          <pre><code>document.querySelectorAll('.prose pre').forEach(function (pre) {
+  var btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = '复制';
+
+  btn.addEventListener('click', function () {
+    var code = pre.querySelector('code') || pre;
+    navigator.clipboard.writeText(code.innerText).then(function () {
+      btn.textContent = '已复制';
+      setTimeout(function () { btn.textContent = '复制'; }, 1600);
+    });
+  });
+
+  pre.appendChild(btn);
+});</code></pre>
+          <p>
+            按钮默认 <code>opacity: 0</code>，靠 <code>pre:hover .copy-btn</code> 显示。
+            触屏设备没有 hover，所以在窄屏媒体查询里把它强制设为可见。
+          </p>
+
+          <h2>站内搜索：两级降级</h2>
+          <p>
+            搜索走 <code>search-index.json</code>（由 <code>tools/build.mjs</code> 从文章里提取生成），
+            支持全文匹配。但如果这个文件不存在——比如你还没跑过构建脚本——它会自动降级为
+            「只匹配页面上已经渲染出来的卡片文字」，功能弱一些但不会报错：
+          </p>
+          <pre><code>fetch(new URL('search-index.json', ROOT))
+  .then(function (r) { return r.ok ? r.json() : null; })
+  .then(function (data) { index = Array.isArray(data) ? data : null; })
+  .catch(function () { /* 静默降级到 DOM 过滤 */ });</code></pre>
+          <p>
+            其中 <code>ROOT</code> 是从 <code>&lt;script src&gt;</code> 反推出来的站点根路径，
+            所以同一份 <code>main.js</code> 在 <code>/</code> 和 <code>/posts/</code> 下都能正确工作，
+            甚至直接用 <code>file://</code> 打开也能跑：
+          </p>
+          <pre><code>var SELF = document.currentScript &amp;&amp; document.currentScript.src;
+var ROOT = SELF ? new URL('../', SELF) : new URL('./', location.href);</code></pre>
+
+          <h2>一共多少行</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>功能</th><th>行数</th><th>依赖</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>暗色模式（含 head 内联防闪烁）</td><td>约 25</td><td>无</td></tr>
+                <tr><td>移动端导航</td><td>约 15</td><td>无</td></tr>
+                <tr><td>目录生成 + 滚动高亮</td><td>约 45</td><td>无</td></tr>
+                <tr><td>代码复制</td><td>约 22</td><td>Clipboard API</td></tr>
+                <tr><td>阅读进度 + 回到顶部</td><td>约 35</td><td>无</td></tr>
+                <tr><td>站内搜索（含降级）</td><td>约 55</td><td>fetch</td></tr>
+                <tr><td><strong>合计</strong></td><td><strong>约 200</strong></td><td><strong>0 个第三方库</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            这些代码全部在你自己的仓库里，随时可以改。没有黑盒，没有版本升级要跟，
+            也没有「主题作者不维护了怎么办」这种问题。
+          </p>
+        </article>
+
+        <nav class="post-nav">
+          <a class="prev" href="hello-world.html"><span>← 上一篇</span>欢迎使用纯静态博客骨架</a>
+        </nav>
+      </div>
+
+      <aside class="post-aside">
+        <p class="toc-title">本页目录</p>
+        <nav class="toc" id="toc" aria-label="本页目录"></nav>
+      </aside>
+    </div>
+  </main>
+
+  <!--@footer-->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© <span id="year">2026</span> 我的博客 · 纯 HTML / CSS / JS 手写，无生成器、无依赖</span>
+    <nav aria-label="页脚导航">
+      <a href="../index.html">首页</a>
+      <a href="../about.html">关于</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>
+<!--@/footer-->
+
+  <script src="../assets/main.js"></script>
+</body>
+</html>
